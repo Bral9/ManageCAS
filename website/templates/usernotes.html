@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %} Comptes rendus de {{ student.first_name }} {% endblock title%}
+
+{% block content %}
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+  <div class="accordion" id="accordionExample">
+    {% for note in student.notes|sort(attribute='time')|reverse %} 
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ note.id }}" aria-expanded="false" aria-controls="collapse{{ note.id }}">
+            {{ note.title }} - {{ note.time }}
+          </button>
+        </h2>
+        <div id="collapse{{ note.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+
+            <textarea readonly class="ckeditor form-control" id="text" name="text">{{ note.text }}</textarea>
+            <div class="container mt-3">
+              <form method="post">
+                <div class="form-group row"> 
+                  <textarea class="form-control" rows="4" name="desc{{ note.id }}" id="desc{{ note.id }}" placeholder="Ajouter un commentaire"></textarea>
+                  <input type="hidden" name="getId" id="getId" value="{{ note.id }}">
+                  </div>
+                  <button id="next" type="submit"  class="btn btn-dark" style="  display: block;margin-left: auto;margin-right: 0">Ajouter</button>
+              </form>
+              <h3>Commentaires</h3>
+              <hr>
+              {% for comment in note.comment|sort(attribute='time')|reverse %}
+              <div id="refresh-container">
+                <pre style="white-space: pre-wrap">{{ comment.text }}</pre>
+                <hr>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+<script>
+  $(document).ready( function() {
+
+
+
+      $('#next').click(function() {
+          $.ajax("{{ url_for('views.usernotes', id=student.id) }}").done(function (reply) {
+            $('#refresh-container').html(reply);
+          });
+      });
+  });
+</script>
+{% endblock content %}
+
+<!-- <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-sm mx-2"><a href="/update/{{note.id}}">update</a></button> -->

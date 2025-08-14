@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} All Students {% endblock title%}
+{% block deleteAcc %}
+<div class="form-inline mx-2 my-lg-0 ">
+    <a href="/details/{{user.id}}" class="btn btn-warning my-2 my-sm-0" type="button" id="logout">Show Details</a>
+</div>          
+{% endblock deleteAcc %}
+
+
+{% block content %}
+<h2 align="center">Students</h2>
+        <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" >Nom de l'élève</th>
+                        <th scope="col">Nombre de notes</th>
+                        <th scope="col">Classe</th>
+                      </tr>
+                </thead>
+                <tbody>
+                {% for usr,count in all_users %}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>{{usr.email}}</td>
+                    <td>{{usr.first_name}}</td>
+                    <td style="text-align:center">{{count}}</td>                    
+                  </tr>
+                  {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="add">
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+{% endblock content %}
