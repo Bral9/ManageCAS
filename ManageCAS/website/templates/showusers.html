@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} Tous les élèves {% endblock title%}
+
+
+{% block content %}
+<h2 align="center">Elèves</h2>
+        <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" >Prénom</th>
+                        <th scope="col">Classe</th>
+                        <th scope="col">Email</th>
+                        <th scope="col"><center>Comptes rendus</center></th>
+                      </tr>
+                </thead>
+                <tbody>
+                {% for usr,count in all_users %}
+                <tr>
+                    <th scope="row">{{usr.first_name}}</th>
+                    <td>
+                      <form method="post">
+                        <select name="classe" id ="classe">
+                          {% if usr.classe=="Tle IB" %}
+                            <option value="Tle IB">Tle IB</option>
+                            <option value="1ere IB">1ere IB</option>
+                          {% else %}
+                            <option value="1ere IB">1ere IB</option>
+                            <option value="Tle IB">Tle IB</option>
+                          {% endif %}
+                        </select>
+                        <input type="hidden" name="studid" id="studid" value="{{ usr.id }}">
+                        <input type="submit" value="Accepter">
+                      </form>
+                    </td>
+                    <td>{{usr.email}}</td>
+                      <td><center>
+                        {{usr.notes|length}}
+                        <a href="{{ url_for('views.usernotes', id=usr.id) }}">Voir</a>
+                      </center></td>                    
+                  </tr>
+                  {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+
+{% endblock content %}
