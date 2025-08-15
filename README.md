@@ -18,8 +18,8 @@ Students write and organize their CAS reports, Teachers review and comment, and 
 - **Show all users** view for staff; assign classes
 - **Authentication** with `flask-login`
 - **SQLite + SQLAlchemy** (1-to-many: Student → Notes, Note → Comments)
-- **Minimal, responsive UI** (OpenAI-style dark theme)
-- **Optional rich text** via `Flask-CKEditor` (falls back to `<textarea>`)
+- **Minimal, responsive UI**
+- **Optional rich text** via `Flask-CKEditor`
 
 ### Tech stack
 - Python (Flask 3.x), Jinja2 templates  
