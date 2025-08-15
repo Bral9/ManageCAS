@@ -1,5 +1,5 @@
 # ManageCAS
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## About
 
 **Manage-CAS** is a lightweight Flask web app that helps schools run the IB CAS (Creativity, Activity, Service) workflow.  
