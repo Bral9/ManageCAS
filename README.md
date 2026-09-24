@@ -3,7 +3,7 @@
 ## About
 
 **Manage-CAS** is a lightweight Flask web app that helps schools run the IB CAS (Creativity, Activity, Service) workflow.  
-Students write and organize their CAS reports, Teachers review and comment, and Admins manage accounts — all in a clean, OpenAI-inspired UI.
+Students write and organize their CAS reports, Teachers review and comment, and Admins manage accounts — all in a clean.
 
 ### Why it’s useful
 - Centralizes CAS notes and feedback in one place (no email threads or scattered docs).
