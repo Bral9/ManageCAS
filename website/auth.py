@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
+import os
+import secrets
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from .database import db                      
 from .models import Student, Teacher, Admin   
@@ -11,12 +14,13 @@ def getUserType():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    SEED_EMAIL = 'brealtchuimi@gmail.com'
-    if not Admin.query.filter_by(email=SEED_EMAIL).first():
+    # First admin comes from the environment, never from the code
+    seed_email, seed_password = os.getenv('ADMIN_EMAIL'), os.getenv('ADMIN_PASSWORD')
+    if seed_email and seed_password and not Admin.query.filter_by(email=seed_email).first():
         db.session.add(Admin(
-            email=SEED_EMAIL,
-            password=generate_password_hash('1234567'),
-            first_name='Breal'
+            email=seed_email,
+            password=generate_password_hash(seed_password),
+            first_name='Admin'
         ))
         db.session.commit()
 
@@ -59,7 +63,7 @@ def add_user():
         email = (request.form.get('email') or '').strip()
         first_name = (request.form.get('firstName') or '').strip()
         teacher = request.form.get('teacher')  # checkbox or value
-        password = '1234567'
+        password = secrets.token_urlsafe(9)  # shown once to the admin below
 
         # Avoid duplicates across all tables
         exists = (Student.query.filter_by(email=email).first()
@@ -78,13 +82,18 @@ def add_user():
                             password=generate_password_hash(password)))
             db.session.add(user)
             db.session.commit()
-            flash('Le compte a été créé avec succès', 'success')
+            flash(f'Le compte a été créé avec succès. Mot de passe temporaire : {password}', 'success')
 
     return render_template("add_user.html", user=current_user)
 
 @auth.route('/changePass/<int:id>', methods=['POST'])
 @login_required
 def changePass(id):
+    # Users may only change their own password
+    if id != current_user.id:
+        flash("Action non autorisée.", 'error')
+        return redirect(url_for("views.details", id=current_user.id))
+
     password1 = request.form.get('password1') or ''
     password2 = request.form.get('password2') or ''
 

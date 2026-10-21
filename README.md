@@ -32,4 +32,4 @@ Students write and organize their CAS reports, Teachers review and comment, and 
 2. **Teachers/Admins** open a student’s notes and add comments.  
 3. **Admins** can create teacher/student accounts and manage access.
 
-> First run seeds a default Admin if none exists (email `brealtchuimi@gmail.com`, password `1234567`) — you can change it with `reset_admin.py`.
+> **First admin:** set `ADMIN_EMAIL` and `ADMIN_PASSWORD` (and ideally `SECRET_KEY`) as environment variables before the first run; the admin account is created on the first visit to `/login`. New student/teacher accounts get a random temporary password, shown once to the admin.

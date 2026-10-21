@@ -3,13 +3,14 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from .database import db      # ✅ use the shared db
 import os
+import secrets
 
 DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    app.debug = True
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fndbnfjdhfdnjfd')
+    app.debug = os.getenv('FLASK_DEBUG') == '1'
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or secrets.token_hex(32)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
